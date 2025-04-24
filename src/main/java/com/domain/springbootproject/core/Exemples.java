@@ -81,8 +81,13 @@ public class Exemples {
         // Exemplo de Stream com LAMBDA
         responseSearchMovieTO.getResults().stream()
           .sorted(Comparator.comparing(r -> r.getTitle()))
+          .peek(e -> System.out.println("peek 01 => " + e))
           .limit(5)
+          .peek(e -> System.out.println("peek 02 => " + e))
           .filter(r -> r.isAdult() == true)
+          .peek(e -> System.out.println("peek 03 => " + e))
+          .map(r -> r.getTitle().toUpperCase())
+          .peek(e -> System.out.println("peek 04 => " + e))
           .forEach(System.out::println);
 
         System.out.println("###################################");
