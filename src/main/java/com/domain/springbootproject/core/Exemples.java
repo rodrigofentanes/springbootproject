@@ -17,8 +17,9 @@ public class Exemples {
   private static final Exemples instance = new Exemples();
 	public static Exemples getInstance() { return instance; }
 
+  private Scanner scan = new Scanner(System.in);
+
   public void exemple1() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
-    Scanner scan = new Scanner(System.in);
     System.out.println("Digite o nome do filme que deseja pesquisar:");
     String name = scan.next();
     scan.close();
@@ -46,9 +47,8 @@ public class Exemples {
   }
 
   public void exemple2() throws IOException, InterruptedException {
-    Scanner scan = new Scanner(System.in);
     System.out.println("Digite o nome do filme que deseja pesquisar:");
-    String name = scan.next();
+    String name = scan.nextLine();
     scan.close();
 
     HttpResponse<String> response = TmdbServices.getInstance().searchMovieByName(name);
@@ -59,7 +59,36 @@ public class Exemples {
     System.out.println(dados);
   }
 
-  public void exemple3() {
+  public void exemple3() throws IOException, InterruptedException {
+    System.out.println("Digite o nome do filme que deseja pesquisar:");
+    String name = scan.nextLine();
+    scan.close();
+
+    HttpResponse<String> response = TmdbServices.getInstance().searchMovieByName(name);
+
+    if (response.statusCode() == 200) {
+      ResponseSearchMovieDTO responseSearchMovieTO = ResponseSearchMovieDTO.getInstance().parse(response.body());
     
+      String jsonResult = new GsonBuilder().setPrettyPrinting().create().toJson(responseSearchMovieTO);
+    
+      FileWriter file = new FileWriter("Result.json");
+      file.write(jsonResult);
+      file.close();
+    
+      
+      if (responseSearchMovieTO.getResults() != null && !responseSearchMovieTO.getResults().isEmpty()) {
+        // Exemplo de Stream
+        responseSearchMovieTO.getResults().forEach(System.out::println);
+
+        System.out.println("###################################");
+
+        // Exemplo de LAMBDA
+        responseSearchMovieTO.getResults().forEach(r -> System.out.println(
+          "Titulo: " + r.getTitle()
+          + (r.getRelease_date().isEmpty() ? "" : ", Data de lançamento: " + r.getRelease_date()) 
+          + ", Adulto: " + r.isAdult()
+        ));
+      }
+    }
   }
 }
