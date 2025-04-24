@@ -106,6 +106,9 @@ public class Exemples {
         *
         * Caso quisermos utilizar o flatmap() e adiciona-lo a uma lista imutavel, podemos fazer:
         * List<DataType> nomeDaLista = outraLista.stream().flatmap(t -> t.listaDentroDeOutraLista().stream()).toList();
+        * 
+        * collect e Collectors muito util para agrupamento de valores, criar estatisticas, etc. Ex:
+        * .collect(Collectors.groupingBy(Episodio::getTemporada), Collectors.averagingDouble(Episodio::getAvaliacao))
         */
       }
     }
