@@ -2,6 +2,7 @@ package com.domain.springbootproject.core;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.http.HttpResponse;
 import java.util.Scanner;
 
 import com.domain.springbootproject.model.RecordExemple;
@@ -22,21 +23,25 @@ public class Exemples {
     String name = scan.next();
     scan.close();
     
-    ResponseSearchMovieDTO responseSearchMovieTO = ResponseSearchMovieDTO.getInstance().parse(
-      TmdbServices.getInstance().searchMovieByName(name)
-    );
-  
-    String jsonResult = new GsonBuilder().setPrettyPrinting().create().toJson(responseSearchMovieTO);
-  
-    FileWriter file = new FileWriter("Result.json");
-    file.write(jsonResult);
-    file.close();
-  
-    for (ResponseSearchMovieDTO.Result result : responseSearchMovieTO.getResults()) {
-      System.out.println("#####################################");
-      System.out.println(result.getTitle());
-      System.out.println(result.getRelease_date());
-      System.out.println(result.isAdult());
+    HttpResponse<String> response = TmdbServices.getInstance().searchMovieByName(name);
+
+    if (response.statusCode() == 200) {
+      ResponseSearchMovieDTO responseSearchMovieTO = ResponseSearchMovieDTO.getInstance().parse(response.body());
+    
+      String jsonResult = new GsonBuilder().setPrettyPrinting().create().toJson(responseSearchMovieTO);
+    
+      FileWriter file = new FileWriter("Result.json");
+      file.write(jsonResult);
+      file.close();
+    
+      if (responseSearchMovieTO.getResults() != null && !responseSearchMovieTO.getResults().isEmpty()) {
+        for (ResponseSearchMovieDTO.Result result : responseSearchMovieTO.getResults()) {
+          System.out.println("#####################################");
+          System.out.println(result.getTitle());
+          System.out.println(result.getRelease_date());
+          System.out.println(result.isAdult());
+        }
+      }
     }
   }
 
@@ -45,11 +50,16 @@ public class Exemples {
     System.out.println("Digite o nome do filme que deseja pesquisar:");
     String name = scan.next();
     scan.close();
-    
-    var json = TmdbServices.getInstance().searchMovieByName(name);
+
+    HttpResponse<String> response = TmdbServices.getInstance().searchMovieByName(name);
+    var json = response.body();
     System.out.println(json);
     ConverteDados conversor = new ConverteDados();
     RecordExemple dados = conversor.obterDados(json, RecordExemple.class);
     System.out.println(dados);
+  }
+
+  public void exemple3() {
+    
   }
 }

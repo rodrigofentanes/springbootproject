@@ -10,7 +10,7 @@ public class TmdbServices {
   private static final TmdbServices instance = new TmdbServices();
 	public static TmdbServices getInstance() { return instance; }
 
-  public String searchMovieByName(String name) throws IOException, InterruptedException {
+  public HttpResponse<String> searchMovieByName(String name) throws IOException, InterruptedException {
     HttpClient client = HttpClient.newHttpClient();
     HttpRequest request = HttpRequest.newBuilder()
     .uri(URI.create("https://api.themoviedb.org/3/search/movie?query=" + name.replace(" ", "+") + "&include_adult=true&language=en-US"))
@@ -19,7 +19,6 @@ public class TmdbServices {
     .build();
 
     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-    return response.body();
+    return response;
   }
 }
