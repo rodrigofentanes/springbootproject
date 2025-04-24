@@ -93,6 +93,14 @@ public class Exemples {
           + (r.getRelease_date().isEmpty() ? "" : ", Data de lançamento: " + r.getRelease_date()) 
           + ", Adulto: " + r.isAdult()
         ));
+
+        /*
+        * Caso quisermos utilizar o flatmap() e adiciona-lo a uma lista mutavel, podemos fazer:
+        * List<DataType> nomeDaLista = outraLista.stream().flatmap(t -> t.listaDentroDeOutraLista().stream()).collect(Collectors.toList());
+        *
+        * Caso quisermos utilizar o flatmap() e adiciona-lo a uma lista imutavel, podemos fazer:
+        * List<DataType> nomeDaLista = outraLista.stream().flatmap(t -> t.listaDentroDeOutraLista().stream()).toList();
+        */
       }
     }
   }
