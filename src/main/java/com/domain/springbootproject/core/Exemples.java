@@ -78,7 +78,10 @@ public class Exemples {
       
       if (responseSearchMovieTO.getResults() != null && !responseSearchMovieTO.getResults().isEmpty()) {
         // Exemplo de Stream
-        responseSearchMovieTO.getResults().forEach(System.out::println);
+        responseSearchMovieTO.getResults().stream()
+          .limit(5)
+          .filter(r -> r.isAdult() == true)
+          .forEach(System.out::println);
 
         System.out.println("###################################");
 
