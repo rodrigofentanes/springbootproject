@@ -89,10 +89,17 @@ public class ResponseSearchMovieDTO {
     public int getVote_count() {
       return vote_count;
     }
+
+    @Override
+    public String toString() {
+      return "Titulo: " + getTitle() + (getRelease_date().isEmpty() ? "" : ", Data de lançamento: " + getRelease_date()) + ", Adulto: " + isAdult();
+    }
   }
 
   public ResponseSearchMovieDTO parse(String json) throws JsonMappingException, JsonProcessingException {
     ResponseSearchMovieDTO data = new Gson().fromJson(json, ResponseSearchMovieDTO.class);
     return (ResponseSearchMovieDTO) data;
   }
+
+  
 }

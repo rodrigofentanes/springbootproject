@@ -3,6 +3,7 @@ package com.domain.springbootproject.core;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.util.Comparator;
 import java.util.Scanner;
 
 import com.domain.springbootproject.model.RecordExemple;
@@ -77,8 +78,9 @@ public class Exemples {
     
       
       if (responseSearchMovieTO.getResults() != null && !responseSearchMovieTO.getResults().isEmpty()) {
-        // Exemplo de Stream
+        // Exemplo de Stream com LAMBDA
         responseSearchMovieTO.getResults().stream()
+          .sorted(Comparator.comparing(r -> r.getTitle()))
           .limit(5)
           .filter(r -> r.isAdult() == true)
           .forEach(System.out::println);
