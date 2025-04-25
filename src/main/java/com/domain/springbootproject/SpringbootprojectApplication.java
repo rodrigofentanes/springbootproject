@@ -15,6 +15,6 @@ public class SpringbootprojectApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Exemples.getInstance().exemple3();
+		Exemples.getInstance().exemple4();
 	}
 }

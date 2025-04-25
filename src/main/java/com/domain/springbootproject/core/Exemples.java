@@ -6,6 +6,7 @@ import java.net.http.HttpResponse;
 import java.util.Comparator;
 import java.util.Scanner;
 
+import com.domain.springbootproject.model.Categoria;
 import com.domain.springbootproject.model.RecordExemple;
 import com.domain.springbootproject.model.ResponseSearchMovieDTO;
 import com.domain.springbootproject.services.ConverteDados;
@@ -82,6 +83,7 @@ public class Exemples {
         // O "peek" serve para debugar a execucao da stream
         responseSearchMovieTO.getResults().stream()
           .sorted(Comparator.comparing(r -> r.getTitle()))
+          // .sorted(Comparator.comparing(ResponseSearchMovieDTO::getTitle ))
           .peek(e -> System.out.println("peek 01 => " + e))
           .limit(5)
           .peek(e -> System.out.println("peek 02 => " + e))
@@ -101,16 +103,31 @@ public class Exemples {
         ));
 
         /*
-        * Caso quisermos utilizar o flatmap() e adiciona-lo a uma lista mutavel, podemos fazer:
+        *** Caso quisermos utilizar o flatmap() e adiciona-lo a uma lista mutavel, podemos fazer:
         * List<DataType> nomeDaLista = outraLista.stream().flatmap(t -> t.listaDentroDeOutraLista().stream()).collect(Collectors.toList());
+        * List<DataType> nomeDaLista = outraLista.stream().map(t -> new Serie(t)).collect(Collectors.toList());
         *
-        * Caso quisermos utilizar o flatmap() e adiciona-lo a uma lista imutavel, podemos fazer:
+        *** Caso quisermos utilizar o flatmap() e adiciona-lo a uma lista imutavel, podemos fazer:
         * List<DataType> nomeDaLista = outraLista.stream().flatmap(t -> t.listaDentroDeOutraLista().stream()).toList();
         * 
-        * collect e Collectors muito util para agrupamento de valores, criar estatisticas, etc. Ex:
+        *** collect e Collectors são muito uteis para agrupamento de valores, criar estatisticas, etc. Ex:
         * .collect(Collectors.groupingBy(Episodio::getTemporada), Collectors.averagingDouble(Episodio::getAvaliacao))
         */
       }
+    }
+  }
+
+  public void exemple4() {
+    System.out.println(Categoria.values());
+    System.out.println("###################################");
+    System.out.println(Categoria.valueOf("ACAO"));
+    System.out.println("###################################");
+    System.out.println(Categoria.COMEDIA);
+    System.out.println("###################################");
+    System.out.println(Categoria.fromString("Action"));
+    System.out.println("###################################");
+    for (Categoria categoria : Categoria.values()) {
+      System.out.println(categoria);
     }
   }
 }
