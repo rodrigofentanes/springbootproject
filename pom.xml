@@ -61,6 +61,24 @@
 			<artifactId>gson</artifactId>
 			<version>2.13.0</version>
 		</dependency>
+
+		<!-- 
+		É possível ir no https://start.spring.io/ adicionar as dependencias: 
+		=> "Spring Data JPA"
+		=> "PostgreSQL Driver"
+		Após adicionar estar dependêcias, ir em "EXPLORE",
+		lá estará o arquivo POM com todas as cofigurações necessárias para atualizar o projeto.
+		-->
+		<dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+		<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
 	</dependencies>
 
 	<build>
