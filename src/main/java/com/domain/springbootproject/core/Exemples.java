@@ -157,7 +157,10 @@ public class Exemples {
     
       if (responseSearchMovieTO.getResults() != null && !responseSearchMovieTO.getResults().isEmpty()) {
         for (ResponseSearchMovieDTO.Result result : responseSearchMovieTO.getResults()) {
+          Long tmdbId = (long) result.getId();
+          System.out.println("tmdbId => " + tmdbId + " ##################################");
           WhateverObject movie = new WhateverObject();
+          movie.setTmdbId(tmdbId);
           movie.setWhateverField(result.getTitle());
           movie.setCategoria(Categoria.fromString("Action"));
           listMovies.add(movie);
