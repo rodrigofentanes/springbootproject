@@ -181,4 +181,10 @@ public class Exemples {
       System.out.println("movie.getCategoria() => " + movie.getCategoria());
     }
   }
+
+  public void exemple7() {
+      System.out.println("#####################");
+      System.out.println(System.getenv("POSTGRES_DB_HOST"));
+      System.out.println("#####################");
+  }
 }

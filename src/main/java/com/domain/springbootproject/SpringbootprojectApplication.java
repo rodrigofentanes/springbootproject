@@ -22,7 +22,7 @@ public class SpringbootprojectApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		// Exemples.getInstance().exemple4();
-		new Exemples(movieDAO).getNewInstance(movieDAO).exemple6();
+		Exemples.getInstance().exemple7();
+		// new Exemples(movieDAO).getNewInstance(movieDAO).exemple6();
 	}
 }
