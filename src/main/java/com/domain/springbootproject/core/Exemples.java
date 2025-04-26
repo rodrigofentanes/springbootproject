@@ -171,6 +171,18 @@ public class Exemples {
   }
 
   public void exemple6() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
+    List<WhateverObject> listMovies = movieDAO.findAll();
+
+    for (WhateverObject movie : listMovies) {
+      System.out.println("######################################");
+      System.out.println("movie.getId() => " + movie.getId());
+      System.out.println("movie.getTmdbId() => " + movie.getTmdbId());
+      System.out.println("movie.getWhateverField() => " + movie.getWhateverField());
+      System.out.println("movie.getCategoria() => " + movie.getCategoria());
+    }
+  }
+
+  public void exemple7() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
     System.out.println("Digite o nome do filme que deseja pesquisar:");
     String name = scan.next();
     scan.close();
