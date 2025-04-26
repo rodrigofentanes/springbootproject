@@ -157,10 +157,8 @@ public class Exemples {
     
       if (responseSearchMovieTO.getResults() != null && !responseSearchMovieTO.getResults().isEmpty()) {
         for (ResponseSearchMovieDTO.Result result : responseSearchMovieTO.getResults()) {
-          Long tmdbId = (long) result.getId();
-          System.out.println("tmdbId => " + tmdbId + " ##################################");
           WhateverObject movie = new WhateverObject();
-          movie.setTmdbId(tmdbId);
+          movie.setTmdbId(Long.valueOf(result.getId()));
           movie.setWhateverField(result.getTitle());
           movie.setCategoria(Categoria.fromString("Action"));
           listMovies.add(movie);
@@ -169,6 +167,31 @@ public class Exemples {
         movieDAO.saveAll(listMovies);
       }
 
+    }
+  }
+
+  public void exemple6() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
+    System.out.println("Digite o nome do filme que deseja pesquisar:");
+    String name = scan.next();
+    scan.close();
+    
+    HttpResponse<String> response = TmdbServices.getInstance().searchMovieByName(name);
+
+    if (response.statusCode() == 200) {
+      ResponseSearchMovieDTO responseSearchMovieTO = ResponseSearchMovieDTO.getInstance().parse(response.body());
+      List<WhateverObject> listMovies = new ArrayList<>();
+    
+      if (responseSearchMovieTO.getResults() != null && !responseSearchMovieTO.getResults().isEmpty()) {
+        listMovies = movieDAO.findAll();
+      }
+
+      for (WhateverObject movie : listMovies) {
+        System.out.println("######################################");
+        System.out.println("movie.getId() => " + movie.getId());
+        System.out.println("movie.getTmdbId() => " + movie.getTmdbId());
+        System.out.println("movie.getWhateverField() => " + movie.getWhateverField());
+        System.out.println("movie.getCategoria() => " + movie.getCategoria());
+      }
     }
   }
 }
