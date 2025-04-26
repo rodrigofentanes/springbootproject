@@ -3,12 +3,16 @@ package com.domain.springbootproject.core;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
 
 import com.domain.springbootproject.model.Categoria;
 import com.domain.springbootproject.model.RecordExemple;
 import com.domain.springbootproject.model.ResponseSearchMovieDTO;
+import com.domain.springbootproject.model.WhateverObject;
+import com.domain.springbootproject.repository.MovieDAO;
 import com.domain.springbootproject.services.ConverteDados;
 import com.domain.springbootproject.services.TmdbServices;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,10 +20,15 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.google.gson.GsonBuilder;
 
 public class Exemples {
+  private MovieDAO movieDAO;
+  private Scanner scan = new Scanner(System.in);
+  
+  public Exemples() {}
   private static final Exemples instance = new Exemples();
 	public static Exemples getInstance() { return instance; }
 
-  private Scanner scan = new Scanner(System.in);
+  public Exemples(MovieDAO movieDAO) { this.movieDAO = movieDAO; }
+	public Exemples getNewInstance(MovieDAO movieDAO) { return new Exemples(movieDAO); }
 
   public void exemple1() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
     System.out.println("Digite o nome do filme que deseja pesquisar:");
@@ -128,6 +137,35 @@ public class Exemples {
     System.out.println("###################################");
     for (Categoria categoria : Categoria.values()) {
       System.out.println(categoria);
+    }
+  }
+
+  public void exemple5() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
+    System.out.println("Digite o nome do filme que deseja pesquisar:");
+    String name = scan.next();
+    scan.close();
+    
+    HttpResponse<String> response = TmdbServices.getInstance().searchMovieByName(name);
+
+    if (response.statusCode() == 200) {
+      ResponseSearchMovieDTO responseSearchMovieTO = ResponseSearchMovieDTO.getInstance().parse(response.body());
+      List<WhateverObject> listMovies = new ArrayList<>();
+      String jsonResult = new GsonBuilder().setPrettyPrinting().create().toJson(responseSearchMovieTO);
+      FileWriter file = new FileWriter("Result.json");
+      file.write(jsonResult);
+      file.close();
+    
+      if (responseSearchMovieTO.getResults() != null && !responseSearchMovieTO.getResults().isEmpty()) {
+        for (ResponseSearchMovieDTO.Result result : responseSearchMovieTO.getResults()) {
+          WhateverObject movie = new WhateverObject();
+          movie.setWhateverField(result.getTitle());
+          movie.setCategoria(Categoria.fromString("Action"));
+          listMovies.add(movie);
+        }
+
+        movieDAO.saveAll(listMovies);
+      }
+
     }
   }
 }
