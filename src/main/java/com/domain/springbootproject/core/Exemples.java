@@ -181,29 +181,4 @@ public class Exemples {
       System.out.println("movie.getCategoria() => " + movie.getCategoria());
     }
   }
-
-  public void exemple7() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
-    System.out.println("Digite o nome do filme que deseja pesquisar:");
-    String name = scan.next();
-    scan.close();
-    
-    HttpResponse<String> response = TmdbServices.getInstance().searchMovieByName(name);
-
-    if (response.statusCode() == 200) {
-      ResponseSearchMovieDTO responseSearchMovieTO = ResponseSearchMovieDTO.getInstance().parse(response.body());
-      List<WhateverObject> listMovies = new ArrayList<>();
-    
-      if (responseSearchMovieTO.getResults() != null && !responseSearchMovieTO.getResults().isEmpty()) {
-        listMovies = movieDAO.findAll();
-      }
-
-      for (WhateverObject movie : listMovies) {
-        System.out.println("######################################");
-        System.out.println("movie.getId() => " + movie.getId());
-        System.out.println("movie.getTmdbId() => " + movie.getTmdbId());
-        System.out.println("movie.getWhateverField() => " + movie.getWhateverField());
-        System.out.println("movie.getCategoria() => " + movie.getCategoria());
-      }
-    }
-  }
 }
