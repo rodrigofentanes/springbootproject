@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.domain.springbootproject.model.Categoria;
+import com.domain.springbootproject.model.Episode;
 import com.domain.springbootproject.model.RecordExemple;
 import com.domain.springbootproject.model.ResponseSearchMovieDTO;
 import com.domain.springbootproject.model.WhateverObject;
+import com.domain.springbootproject.repository.EpisodeRepository;
 import com.domain.springbootproject.repository.MovieDAO;
 import com.domain.springbootproject.services.ConverteDados;
 import com.domain.springbootproject.services.TmdbServices;
@@ -19,16 +21,27 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.google.gson.GsonBuilder;
 
+import jakarta.transaction.Transactional;
+
 public class Exemples {
   private MovieDAO movieDAO;
+  private EpisodeRepository episodeRepository;
   private Scanner scan = new Scanner(System.in);
   
   public Exemples() {}
   private static final Exemples instance = new Exemples();
 	public static Exemples getInstance() { return instance; }
 
-  public Exemples(MovieDAO movieDAO) { this.movieDAO = movieDAO; }
+  public Exemples(MovieDAO movieDAO) { 
+    this.movieDAO = movieDAO;  
+  }
 	public Exemples getNewInstance(MovieDAO movieDAO) { return new Exemples(movieDAO); }
+
+  public Exemples(MovieDAO movieDAO, EpisodeRepository episodeRepository) { 
+    this.movieDAO = movieDAO; 
+    this.episodeRepository = episodeRepository; 
+  }
+	public Exemples getNewInstance(MovieDAO movieDAO, EpisodeRepository episodeRepository) { return new Exemples(movieDAO, episodeRepository); }
 
   public void exemple1() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
     System.out.println("Digite o nome do filme que deseja pesquisar:");
@@ -166,7 +179,6 @@ public class Exemples {
 
         movieDAO.saveAll(listMovies);
       }
-
     }
   }
 
@@ -186,5 +198,46 @@ public class Exemples {
       System.out.println("#####################");
       System.out.println(System.getenv("POSTGRES_DB_HOST"));
       System.out.println("#####################");
+  }
+
+  @Transactional
+  public void exemple8() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
+    System.out.println("Digite o nome do filme que deseja pesquisar:");
+    String name = scan.next();
+    scan.close();
+    
+    HttpResponse<String> response = TmdbServices.getInstance().searchMovieByName(name);
+
+    if (response.statusCode() == 200) {
+      ResponseSearchMovieDTO responseSearchMovieTO = ResponseSearchMovieDTO.getInstance().parse(response.body());
+      
+      if (responseSearchMovieTO.getResults() != null && !responseSearchMovieTO.getResults().isEmpty()) {
+        List<WhateverObject> listMovies = new ArrayList<>();
+        
+        for (ResponseSearchMovieDTO.Result result : responseSearchMovieTO.getResults()) {
+          WhateverObject movie = new WhateverObject();
+          movie.setTmdbId(Long.valueOf(result.getId()));
+          movie.setWhateverField(result.getTitle());
+          movie.setCategoria(Categoria.fromString("Action"));
+
+          Episode episode1 = new Episode();
+          episode1.setNumber(1);
+          episode1.setDescription(result.getOverview());
+          episode1.setMovie(movie);
+
+
+          Episode episode2 = new Episode();
+          episode2.setNumber(2);
+          episode2.setDescription(result.getOverview());
+          episode2.setMovie(movie);
+
+          movie.setEpisodes(List.of(episode1, episode2));
+
+          listMovies.add(movie);
+        }
+
+        movieDAO.saveAll(listMovies);
+      }
+    }
   }
 }
