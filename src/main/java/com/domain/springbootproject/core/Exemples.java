@@ -254,4 +254,30 @@ public class Exemples {
     episode.setMovie(movie);
     episodeRepository.save(episode);      
   }
+
+  public void exemple10() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
+    List<WhateverObject> listMovie = new ArrayList<>();
+
+    for (int i = 0; i < 5; i++) {
+      WhateverObject movie = new WhateverObject();
+      movie.setWhateverField("movieName");
+      movie.setTmdbId(Long.valueOf(165132132 + i));
+      movie.setCategoria(Categoria.fromString("Action"));
+      listMovie.add(movie);
+    }
+    
+    listMovie = movieDAO.saveAll(listMovie);
+
+    List<Episode> listEpisodes = new ArrayList<>();
+
+    for (int i = 0; i < listMovie.size(); i++) {
+      Episode episode = new Episode();
+      episode.setNumber(i);
+      episode.setDescription("Rapz... muita coisa");
+      episode.setMovie(listMovie.get(i));
+      listEpisodes.add(episode);
+    }
+
+    episodeRepository.saveAll(listEpisodes);
+  }
 }
