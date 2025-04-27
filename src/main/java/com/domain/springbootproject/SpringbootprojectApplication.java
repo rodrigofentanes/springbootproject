@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.domain.springbootproject.core.Exemples;
+import com.domain.springbootproject.repository.EpisodeRepository;
 import com.domain.springbootproject.repository.MovieDAO;
 
 @SpringBootApplication
@@ -16,13 +17,17 @@ public class SpringbootprojectApplication implements CommandLineRunner {
 	@Autowired
 	private MovieDAO movieDAO;
 
+	@Autowired
+	private EpisodeRepository episodeRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootprojectApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		Exemples.getInstance().exemple7();
-		// new Exemples(movieDAO).getNewInstance(movieDAO).exemple6();
+		// Exemples.getInstance().exemple7();
+		// new Exemples(movieDAO).getNewInstance(movieDAO).exemple5();
+		new Exemples(movieDAO, episodeRepository).getNewInstance(movieDAO, episodeRepository).exemple8();
 	}
 }
