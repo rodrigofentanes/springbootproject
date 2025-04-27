@@ -6,6 +6,7 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Scanner;
 
 import com.domain.springbootproject.model.Categoria;
@@ -275,6 +276,33 @@ public class Exemples {
       episode.setNumber(i);
       episode.setDescription("Rapz... muita coisa");
       episode.setMovie(listMovie.get(i));
+      listEpisodes.add(episode);
+    }
+
+    episodeRepository.saveAll(listEpisodes);
+  }
+
+  public void exemple11() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
+    List<WhateverObject> listMovie = new ArrayList<>();
+
+    for (int i = 0; i < 5; i++) {
+      WhateverObject movie = new WhateverObject();
+      movie.setWhateverField("movieName");
+      movie.setTmdbId(Long.valueOf(165132132 + i));
+      movie.setCategoria(Categoria.fromString("Action"));
+      listMovie.add(movie);
+    }
+    
+    listMovie = movieDAO.saveAll(listMovie);
+    ListIterator<WhateverObject> iterator = listMovie.listIterator();
+
+    List<Episode> listEpisodes = new ArrayList<>();
+
+    while (iterator.hasNext()) {
+      Episode episode = new Episode();
+      episode.setNumber(iterator.nextIndex());
+      episode.setDescription("Rapz... muita coisa");
+      episode.setMovie(iterator.next());
       listEpisodes.add(episode);
     }
 
