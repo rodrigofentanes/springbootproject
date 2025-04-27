@@ -294,6 +294,8 @@ public class Exemples {
     }
     
     listMovie = movieDAO.saveAll(listMovie);
+
+    // O ListIterator é muito útil para quando queremos modificar a lista enquanto percorremos ela mesma.
     ListIterator<WhateverObject> iterator = listMovie.listIterator();
 
     List<Episode> listEpisodes = new ArrayList<>();
