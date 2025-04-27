@@ -240,4 +240,18 @@ public class Exemples {
       }
     }
   }
+
+  public void exemple9() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
+    WhateverObject movie = new WhateverObject();
+    movie.setWhateverField("movieName");
+    movie.setTmdbId(Long.valueOf(165132132));
+    movie.setCategoria(Categoria.fromString("Action"));
+    movie = movieDAO.save(movie);
+    
+    Episode episode = new Episode();
+    episode.setNumber(1);
+    episode.setDescription("Rapz... muita coisa");
+    episode.setMovie(movie);
+    episodeRepository.save(episode);      
+  }
 }
