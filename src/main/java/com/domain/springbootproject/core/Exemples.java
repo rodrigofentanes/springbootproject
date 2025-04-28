@@ -340,4 +340,14 @@ public class Exemples {
       System.out.println("##################### " + movie.getId() + " => " + movie.getWhateverField());
     }));
   }
+
+  public void exemple14() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
+    List<WhateverObject> listMovies = movieDAO.findByName();
+
+    if (listMovies != null && !listMovies.isEmpty()) {
+      for (WhateverObject movie : listMovies) {
+        System.out.println("##################### " + movie.getId() + " => " + movie.getWhateverField());
+      }
+    }
+  }
 }
