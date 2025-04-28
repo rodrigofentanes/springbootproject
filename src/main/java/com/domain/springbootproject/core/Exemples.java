@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Optional;
 import java.util.Scanner;
 
 import com.domain.springbootproject.model.Categoria;
@@ -309,5 +310,15 @@ public class Exemples {
     }
 
     episodeRepository.saveAll(listEpisodes);
+  }
+
+  public void exemple12() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
+    Optional<ArrayList<WhateverObject>> listMovies = movieDAO.findByWhateverFieldContainingIgnoreCase("Name");
+
+    // O ifPresent é util para lidar com Optional
+    listMovies.ifPresent(list -> {
+      list.stream()
+        .forEach(movie -> System.out.println("##################### " + movie.getId() + " => " + movie.getWhateverField()));
+    });
   }
 }
