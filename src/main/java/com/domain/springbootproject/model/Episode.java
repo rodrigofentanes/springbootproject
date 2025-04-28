@@ -18,7 +18,11 @@ public class Episode {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  // // @ManyToOne => Muitos "Episode" podem se relacionar com apenas um "Movie"
+  // @ManyToOne => Muitos "Episode" podem se relacionar com apenas um "Movie"
+  // optional = false => Indica que este campo não é opcional, ou seja, deve ser preenchido
+  // @JoinColumn => declara que está é uma coluna de junção no banco de dados
+  // name = "movie_id" => indica o nome da coluna na tabela
+  // nullable = false => Indica que este campo não pode ser nulo
   @ManyToOne(optional = false)
   @JoinColumn(name = "movie_id", nullable = false)
   private WhateverObject movie;

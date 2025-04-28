@@ -7,6 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -48,7 +49,14 @@ public class WhateverObject {
   // @OneToMany => Um "Movie" pode se relacionar com muitos "Episode" 
   // mappedBy = "movie" => Também mapeamos o atributo "movie" para especificar o relacionamento, é o nome do atributo (Campo) na outra classe
   // cascade = CascadeType.ALL => Permite que dois objetos relacionados possam ser salvos ao mesmo tempo
-  @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+  // fetch = FetchType.LAZY => Trata sobre a forma com o hibernate irá buscar os dados no banco. Se o fetch não for declarado, então o FetchType será automaticamente LAZY
+  // FetchType.LAZY => Uma tradução seria "preguiçoso", dessa forma o hibernate so trará o que for solicitado explicitamente.
+  // FetchType.EAGER => Uma tradução seria "ansioso", ou seja, o hibernate ja trará entidade solicitada com todos os detalhes necessários
+  @OneToMany(
+    mappedBy = "movie"
+    , cascade = CascadeType.ALL
+    , fetch = FetchType.LAZY
+  )
   private List<Episode> episodes;
 
   public Long getId() {
@@ -88,6 +96,7 @@ public class WhateverObject {
   }
 
   public void setEpisodes(List<Episode> episodes) {
+    episodes.forEach(e -> e.setMovie(this));
     this.episodes = episodes;
   }
 
