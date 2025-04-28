@@ -10,7 +10,7 @@ import com.domain.springbootproject.model.WhateverObject;
 // Também poderia ser chamada de MovieRepository
 // Inclusive, so é possível extender de JpaRepository se for por meio de uma interface
 public interface MovieDAO extends JpaRepository<WhateverObject, Long> {
-  // Este metodo utiliza apenas conceitos do "Spring Data Repositories"
+  // Este metodo utiliza apenas conceitos do "Spring Data Repositories" que é entitulada de "Derived Queries (Consultas Derivadas)" 
   // Foi contruido utilziando conceitos de "Repository Query keywords" e "Query Methods Subject Keywords"
   // Utilizando estes padrões podemos fazer pesquisas ao banco de dados sem escrever queries em SQL
   Optional<ArrayList<WhateverObject>> findByWhateverFieldContainingIgnoreCase(String name);
