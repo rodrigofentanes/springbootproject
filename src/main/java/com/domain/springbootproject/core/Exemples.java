@@ -321,4 +321,23 @@ public class Exemples {
         .forEach(movie -> System.out.println("##################### " + movie.getId() + " => " + movie.getWhateverField()));
     });
   }
+
+  public void exemple13() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
+    Categoria categoria = Categoria.fromStringPtBr("Ação");
+    ArrayList<WhateverObject> listMovies = movieDAO.findByCategoria(categoria);
+
+    if (listMovies != null && !listMovies.isEmpty()) {
+      for (WhateverObject movie : listMovies) {
+        System.out.println("##################### " + movie.getId() + " => " + movie.getWhateverField());
+      }
+    }
+    
+    System.out.println("#################################################### ");
+
+    Optional.ofNullable(listMovies)
+    .filter(list -> !list.isEmpty())
+    .ifPresent(list -> list.forEach(movie -> {
+      System.out.println("##################### " + movie.getId() + " => " + movie.getWhateverField());
+    }));
+  }
 }
