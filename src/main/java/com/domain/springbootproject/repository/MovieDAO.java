@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.domain.springbootproject.model.Categoria;
+import com.domain.springbootproject.model.Episode;
 import com.domain.springbootproject.model.WhateverObject;
 
 // Também poderia ser chamada de MovieRepository
@@ -39,4 +40,8 @@ public interface MovieDAO extends JpaRepository<WhateverObject, Long> {
   // SQL nativo = usa nomes de tabela (banco de dados)
   @Query("SELECT m FROM WhateverObject m WHERE m.whateverField = :name")
   List<WhateverObject> findByName(@Param("name") String name);
+
+  // Aqui embaixo é como se estivessemos fazendo movie.episode.description
+  @Query("SELECT e FROM WhateverObject m JOIN m.episodes e WHERE e.description ILIKE %:descriptionExcerpt%")
+  List<Episode> episodesByDescriptionExcerpt(String descriptionExcerpt);
 }

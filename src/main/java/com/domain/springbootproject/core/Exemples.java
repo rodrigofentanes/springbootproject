@@ -360,4 +360,14 @@ public class Exemples {
       }
     }
   }
+
+  public void exemple16() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
+    List<Episode> listEpisodes = movieDAO.episodesByDescriptionExcerpt("Rapz");
+
+    if (listEpisodes != null && !listEpisodes.isEmpty()) {
+      for (Episode episode : listEpisodes) {
+        System.out.println("##################### " + episode.getId() + " => " + episode.getDescription());
+      }
+    }
+  }
 }

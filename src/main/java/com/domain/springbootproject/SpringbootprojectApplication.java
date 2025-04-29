@@ -28,6 +28,6 @@ public class SpringbootprojectApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		// Exemples.getInstance().exemple7();
 		// new Exemples(movieDAO).getNewInstance(movieDAO).exemple5();
-		new Exemples(movieDAO, episodeRepository).getNewInstance(movieDAO, episodeRepository).exemple15();
+		new Exemples(movieDAO, episodeRepository).getNewInstance(movieDAO, episodeRepository).exemple16();
 	}
 }
